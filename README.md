@@ -158,17 +158,6 @@ quantedge/
 └── .env
 ```
 
-Suggested file usage:
-
-| File | Purpose |
-|---|---|
-| `app.py` | Main Streamlit application |
-| `README.md` | Project documentation |
-| `requirements.txt` | Python dependencies |
-| `.env` | Stores environment variables such as `GROQ_API_KEY` |
-
----
-
 ## Installation
 
 ### 1. Clone the Repository
