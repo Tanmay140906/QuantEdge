@@ -105,7 +105,6 @@ hr{border-color:#1e2130!important;}
 </style>
 """, unsafe_allow_html=True)
 
-# ── Plotly base ───────────────────────────────────────────────────────────────
 CHART_BASE   = dict(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="#13161e",
                     font=dict(family="Sora,sans-serif", color="#9ca3af", size=12),
                     margin=dict(l=10,r=10,t=44,b=10),
@@ -120,11 +119,6 @@ def _layout(**extra):
     l["yaxis"] = dict(YAXIS_STYLE)
     l.update(extra)
     return l
-
-
-# ═════════════════════════════════════════════════════════════════════════════
-# ANALYSIS FUNCTIONS
-# ═════════════════════════════════════════════════════════════════════════════
 
 def compute_bollinger(df, window=30, multiplier=1.5):
     df = df.copy()
@@ -234,6 +228,7 @@ def compute_metrics(results, years):
 
 def get_current_signal(df):
     last = df.iloc[-1]
+
     try:
         sc = sum([float(last["Close"])>float(last["Ub"]),
                   float(last["OBV"])<float(last["OBV_EMA"]),
@@ -245,11 +240,6 @@ def get_current_signal(df):
     if sc>=2: return "SELL",f"{sc}/3 indicators signal overbought — consider selling."
     if bc>=2: return "BUY", f"{bc}/3 indicators signal oversold — potential entry point."
     return "HOLD","No strong consensus — stay on the sidelines."
-
-
-# ═════════════════════════════════════════════════════════════════════════════
-# CHART FUNCTIONS
-# ═════════════════════════════════════════════════════════════════════════════
 
 def chart_candlestick(df, ticker):
     fig = go.Figure(go.Candlestick(x=df.index, open=df["Open"], high=df["High"],
@@ -337,11 +327,6 @@ def chart_profit_per_trade(profits):
     lo["yaxis"]["title"] = "Profit USD($)"
     fig.update_layout(**lo)
     return fig
-
-
-# ═════════════════════════════════════════════════════════════════════════════
-# GROQ AI SUMMARY
-# ═════════════════════════════════════════════════════════════════════════════
 
 def get_groq_summary(ticker, metrics, signal, start_date, end_date):
     api_key = os.environ.get("GROQ_API_KEY","")
