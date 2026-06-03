@@ -1,229 +1,387 @@
-# QuantEdge 📈
+# QuantEdge 📈  
+### A Streamlit-Based Algorithmic Trading Strategy Backtester
 
-QuantEdge is a Streamlit-based algorithmic trading strategy web app that backtests a multi-indicator technical analysis strategy using **Bollinger Bands**, **On-Balance Volume (OBV)**, and **Relative Strength Index (RSI)**.
+QuantEdge is an interactive algorithmic trading strategy backtesting web application built with Python and Streamlit.
 
-The app downloads historical stock data from Yahoo Finance, computes the indicators, runs a simple 2-of-3 voting strategy, visualizes the trades, calculates performance metrics, and generates a plain-English AI summary using Groq.
+It allows users to select a stock, choose a historical date range, adjust strategy parameters, and test how a technical-analysis-based trading strategy would have performed in the past.
 
-> **Disclaimer:** This project is for educational and research purposes only. It is not financial advice. Past performance does not guarantee future returns.
+The application uses three popular technical indicators:
+
+- Bollinger Bands
+- On-Balance Volume (OBV)
+- Relative Strength Index (RSI)
+
+Instead of depending on only one indicator, QuantEdge uses a 2-out-of-3 voting system. A trade signal is generated only when at least two indicators agree. This makes the strategy more reliable than using a single indicator in isolation.
+
+QuantEdge also includes user authentication, SQLite-based storage for previous analyses, interactive Plotly charts, performance metrics, trade logs, and an AI-generated analysis summary powered by Groq.
+
+---
+
+## Disclaimer
+
+QuantEdge is built strictly for educational, learning, and research purposes.
+
+It is not financial advice.
+
+The results shown by this application are based on historical market data. Past performance does not guarantee future returns. This app should not be used as the only basis for buying, selling, or holding any stock or financial asset.
+
+Always do your own research or consult a qualified financial advisor before making real investment decisions.
+
+---
+
+## Table of Contents
+
+- Project Overview
+- Why QuantEdge Was Built
+- Features
+- Tech Stack
+- How the Application Works
+- Project Structure
+- Setup Instructions
+- Environment Variables
+- How to Run the Project
+- How to Use the Application
+- Input Parameters Explained
+- Indicators Explained
+- Strategy Logic
+- Backtesting Flow
+- Charts and Visualizations
+- Performance Metrics
+- Trade Log
+- AI Summary
+- Previous Analysis History
+- Example Tickers
+- Important Notes
+- Limitations
+- Future Improvements
+- Educational Value
+- Author
+
+---
+
+## Project Overview
+
+QuantEdge is a complete beginner-friendly trading analysis dashboard.
+
+The user enters a stock ticker, selects a historical date range, customizes technical indicator parameters, and runs the analysis. The app downloads historical stock data using Yahoo Finance, calculates indicators, generates buy/sell/hold signals, simulates trades, calculates performance metrics, and displays the result visually.
+
+The final output includes:
+
+- Current strategy signal
+- Candlestick price chart
+- Bollinger Bands chart
+- OBV chart
+- RSI chart
+- Buy and sell signal chart
+- Portfolio performance chart
+- Profit/loss chart
+- Trade log
+- Key performance metrics
+- AI-generated explanation
+- Saved analysis history
+
+The main goal of this project is to help users understand how technical indicators are used in algorithmic trading and how trading strategies can be tested using historical data.
+
+---
+
+## Why QuantEdge Was Built
+
+Many beginners learn technical indicators like RSI, Bollinger Bands, and volume analysis separately, but they often struggle to understand how these indicators can be combined into an actual strategy.
+
+QuantEdge solves this by providing a practical dashboard where users can:
+
+- Select real stocks
+- Test the strategy on real historical data
+- See where the strategy would have bought and sold
+- Understand whether the strategy made profit or loss
+- Read beginner-friendly AI explanations
+- Store and revisit previous analyses
+
+This makes QuantEdge useful for students, beginner traders, developers, and anyone learning about algorithmic trading and financial dashboards.
 
 ---
 
 ## Features
 
-- Interactive Streamlit dashboard
-- Historical stock data using `yfinance`
-- Bollinger Bands, OBV, OBV EMA, and RSI indicator calculation
-- 2-of-3 consensus-based buy/sell strategy
-- Buy and sell signal visualization
-- Portfolio value and profit/loss charts
-- Trade log with open and closed trades
-- Performance metrics including:
-  - Net return
-  - Annualised return
-  - Sharpe ratio
-  - Win rate
-  - Max drawdown
-  - Best and worst trade
-  - Win/loss ratio
-- AI-generated analysis summary powered by Groq Llama 3.3 70B
-- Custom dark UI with Plotly charts
+### User Authentication
+
+QuantEdge includes a login and signup system.
+
+Users can create an account and then log in to access the main dashboard. This allows each user to maintain their own analysis history.
+
+---
+
+### Stock Backtesting
+
+Users can enter a stock ticker and test the strategy over a selected historical period.
+
+The application fetches historical stock data using Yahoo Finance through the `yfinance` Python library.
+
+---
+
+### Technical Indicators
+
+QuantEdge calculates and visualizes:
+
+- Bollinger Bands
+- On-Balance Volume
+- OBV EMA
+- RSI
+
+These indicators are used to generate trading signals.
+
+---
+
+### 2-of-3 Voting Strategy
+
+The strategy does not blindly follow a single indicator.
+
+A BUY or SELL signal is generated only when at least two out of the three indicators agree.
+
+This creates a more balanced decision-making system.
+
+---
+
+### Interactive Charts
+
+The app uses Plotly to display interactive charts.
+
+Users can zoom, hover, and inspect values on the graphs.
+
+Charts include:
+
+- Candlestick chart
+- Bollinger Bands chart
+- OBV chart
+- RSI chart
+- Buy/sell signal chart
+- Portfolio value chart
+- Profit/loss per trade chart
+
+---
+
+### Performance Metrics
+
+QuantEdge calculates several important performance metrics such as:
+
+- Net return
+- Annualised return
+- Sharpe ratio
+- Win rate
+- Max drawdown
+- Best trade
+- Worst trade
+- Total trades
+- Winning trades
+- Losing trades
+- Win/loss ratio
+
+These metrics help users evaluate whether the strategy performed well or poorly.
+
+---
+
+### AI-Generated Summary
+
+QuantEdge uses Groq to generate a plain-English explanation of the backtest result.
+
+This helps beginners understand the analysis without needing deep financial knowledge.
+
+---
+
+### Previous Analysis History
+
+The app stores previous analyses in SQLite.
+
+Users can go to the History page and view their past analyses without running the same backtest again.
+
+---
+
+### Duplicate Analysis Detection
+
+If the user tries to run the exact same analysis again with the same ticker, date range, capital, and parameters, the app can detect that a similar analysis already exists.
+
+This helps avoid unnecessary repeated calculations.
 
 ---
 
 ## Tech Stack
 
-- **Python**
-- **Streamlit** for the web interface
-- **yfinance** for stock market data
-- **Pandas** and **NumPy** for data processing
-- **Plotly** for interactive charts
-- **Groq API** for AI-generated summary
-- **python-dotenv** for environment variable management
+QuantEdge uses the following technologies:
+
+- Python
+- Streamlit
+- yfinance
+- Pandas
+- NumPy
+- Plotly
+- SQLite
+- Groq API
+- python-dotenv
+
+`python-dotenv` is used to load environment variables from a `.env` file.
+
+This is mainly used for securely loading the Groq API key.
 
 ---
 
-## Strategy Overview
+## How the Application Works
 
-QuantEdge uses a **2-of-3 voting system**. A trade signal is generated only when at least two of the three indicators agree.
+At a high level, QuantEdge follows this flow:
 
-### Indicators Used
-
-#### 1. Bollinger Bands
-
-Bollinger Bands are used to detect whether the stock price is stretched too far above or below its recent average.
-
-- If the closing price goes above the upper band, the stock may be overbought.
-- If the closing price goes below the lower band, the stock may be oversold.
-
-In this app:
-
-- Midband = rolling average of closing price
-- Upper Band = Midband + multiplier × standard deviation
-- Lower Band = Midband - multiplier × standard deviation
-
-Default configuration:
-
-```text
-Window: 30 days
-Multiplier: 1.5
-```
-
-#### 2. On-Balance Volume
-
-OBV tracks buying and selling pressure using price movement and volume.
-
-- If the closing price rises, volume is added to OBV.
-- If the closing price falls, volume is subtracted from OBV.
-- If OBV is above its EMA, it is treated as bullish.
-- If OBV is below its EMA, it is treated as bearish.
-
-Default configuration:
-
-```text
-OBV EMA span: 20 days
-```
-
-#### 3. RSI
-
-RSI measures price momentum.
-
-- RSI above the overbought threshold suggests the stock may be overheated.
-- RSI below the oversold threshold suggests the stock may be beaten down and may reverse.
-
-Default configuration:
-
-```text
-RSI span: 16 days
-Overbought threshold: 90
-Oversold threshold: 30
-```
-
----
-
-## Buy/Sell Logic
-
-### Buy Signal
-
-A buy signal is generated when at least **2 out of 3** conditions are true:
-
-```text
-1. Close price is below the lower Bollinger Band
-2. OBV is above OBV EMA
-3. RSI is below the oversold threshold
-```
-
-When a buy signal appears, the strategy invests the full available portfolio value into the stock at the next day's open price.
-
-### Sell Signal
-
-A sell signal is generated when at least **2 out of 3** conditions are true:
-
-```text
-1. Close price is above the upper Bollinger Band
-2. OBV is below OBV EMA
-3. RSI is above the overbought threshold
-```
-
-When a sell signal appears, the strategy exits the full position at the next day's open price.
-
-### Hold Signal
-
-If fewer than two indicators agree, the app shows a `HOLD` signal. This means there is no strong consensus among the indicators.
-
----
-
-## How the Backtest Works
-
-1. The user enters a stock ticker and date range.
-2. The app downloads daily historical data from Yahoo Finance.
-3. It calculates Bollinger Bands, OBV, OBV EMA, and RSI.
-4. It scans through the historical data one day at a time.
-5. If 2 or more indicators give a buy signal and there is no open position, the strategy buys.
-6. If 2 or more indicators give a sell signal and there is an open position, the strategy sells.
-7. Every completed trade is stored with buy price, sell price, profit/loss, and portfolio value.
-8. The app calculates final metrics and displays charts, trade logs, and AI analysis.
+1. User signs up or logs in.
+2. User goes to the Analysis page.
+3. User enters a stock ticker.
+4. User selects a start date and end date.
+5. User adjusts technical indicator parameters if needed.
+6. User enters initial capital.
+7. App downloads historical stock data.
+8. App calculates Bollinger Bands, OBV, OBV EMA, and RSI.
+9. App applies the 2-of-3 trading strategy.
+10. App simulates buy and sell trades.
+11. App calculates performance metrics.
+12. App displays charts, trade log, and summary.
+13. App stores the result in SQLite.
+14. User can revisit the result from the History page.
 
 ---
 
 ## Project Structure
 
-A simple project structure can look like this:
+The project structure looks like this:
 
 ```text
-quantedge/
+QuantEdge/
 │
 ├── app.py
-├── README.md
+├── auth.py
+├── database.py
+├── run.py
+├── quantedge.db
 ├── requirements.txt
+├── README.md
 └── .env
 ```
 
-## Installation
 
-### 1. Clone the Repository
+### Setup Instructions
+
+## 1. Prerequisites
+
+Before setting up the project, make sure you have the following installed:
+
+- Python 3.10 or above
+- Git
+- pip
+- A code editor such as VS Code
+- Internet connection for downloading stock data from Yahoo Finance
+
+You can check your Python version using:
 
 ```bash
-git clone <your-repository-url>
-cd quantedge
+python --version
 ```
 
-### 2. Create a Virtual Environment
+or:
 
-For Windows:
+```bash
+python3 --version
+```
+
+You can check Git using:
+
+```bash
+git --version
+```
+
+---
+
+## 2. Clone the Repository
+
+Open your terminal or command prompt and run:
+
+```bash
+git clone https://github.com/Tanmay140906/QuantEdge.git
+```
+
+Move inside the project folder:
+
+```bash
+cd QuantEdge
+```
+
+---
+
+## 3. Create a Virtual Environment
+
+A virtual environment keeps the project dependencies separate from your system Python packages.
+
+### For Windows
 
 ```bash
 python -m venv venv
+```
+
+Activate the virtual environment:
+
+```bash
 venv\Scripts\activate
 ```
 
-For macOS/Linux:
+### For macOS/Linux
 
 ```bash
 python3 -m venv venv
+```
+
+Activate the virtual environment:
+
+```bash
 source venv/bin/activate
 ```
 
-### 3. Install Dependencies
+After activation, your terminal should show something like:
 
-Create a `requirements.txt` file with the following dependencies:
-
-```txt
-streamlit
-yfinance
-numpy
-pandas
-plotly
-groq
-python-dotenv
+```text
+(venv)
 ```
 
-Then install them:
+---
+
+## 4. Install Dependencies
+
+Install all required Python packages using:
 
 ```bash
 pip install -r requirements.txt
 ```
 
+If you face any issue with `requirements.txt`, install the main dependencies manually:
+
+```bash
+pip install streamlit yfinance pandas numpy plotly groq python-dotenv
+```
+
 ---
 
-## Environment Variables
+## 5. Create the Environment File
 
-The AI summary feature uses the Groq API. To enable it, create a `.env` file in the project root:
+QuantEdge uses the Groq API for generating the AI analysis summary.
+
+Create a file named `.env` in the root folder of the project.
+
+Inside `.env`, add:
 
 ```env
 GROQ_API_KEY=your_groq_api_key_here
 ```
 
-If this key is not provided, the app will still run, but the AI summary section will show a warning instead of generating an analysis.
+Replace `your_groq_api_key_here` with your actual Groq API key.
 
-For Streamlit Cloud deployment, you can also add the key inside Streamlit secrets:
-
-```toml
-GROQ_API_KEY = "your_groq_api_key_here"
-```
+The Groq API key is optional for the main backtesting features. If you do not add it, the app can still run, but the AI summary section may not work.
 
 ---
 
-## How to Run the App
+## 6. Run the Application
 
 Run the Streamlit app using:
 
@@ -231,9 +389,17 @@ Run the Streamlit app using:
 streamlit run app.py
 ```
 
-After running the command, Streamlit will open the app in your browser.
+If the project includes `run.py`, you may also run:
 
-Usually, it will be available at:
+```bash
+python run.py
+```
+
+After running the command, Streamlit will start a local server.
+
+Usually, the app will open automatically in your browser.
+
+If it does not open automatically, go to:
 
 ```text
 http://localhost:8501
@@ -241,122 +407,183 @@ http://localhost:8501
 
 ---
 
-## How to Use QuantEdge
+## 7. Create an Account
 
-1. Open the app in your browser.
-2. Enter a valid Yahoo Finance stock ticker.
-   - Example: `AAPL`, `TSLA`, `MSFT`
-   - For Indian stocks, use `.NS`
-   - Example: `RELIANCE.NS`, `INFY.NS`, `TCS.NS`
-3. Select a start date and end date.
-4. Adjust strategy parameters if required:
-   - Bollinger Band window
-   - Bollinger Band multiplier
-   - RSI span
-   - RSI overbought threshold
-   - RSI oversold threshold
-   - Initial capital
-5. Click **Run Analysis**.
-6. View the generated results:
-   - Current signal
-   - Performance metrics
-   - Candlestick chart
-   - Bollinger Band chart
-   - OBV chart
-   - RSI chart
-   - Buy/sell signal chart
-   - Portfolio performance charts
-   - Trade log
-   - AI-generated summary
+When the application opens, you will see the authentication screen.
+
+If you are using the app for the first time:
+
+1. Click or switch to the **Sign Up** section.
+2. Enter your username.
+3. Enter your email.
+4. Enter your password.
+5. Confirm your password.
+6. Create your account.
+
+After signing up, log in using your username and password.
 
 ---
 
-## Example Tickers
+## 8. Run Your First Analysis
 
-| Market | Example Tickers |
-|---|---|
-| US Stocks | `AAPL`, `MSFT`, `TSLA`, `NVDA`, `GOOGL` |
-| Indian Stocks | `RELIANCE.NS`, `INFY.NS`, `TCS.NS`, `HDFCBANK.NS` |
-| ETFs | `SPY`, `QQQ`, `VOO` |
+After login, go to the **Analysis** page.
 
----
+Enter the required details:
 
-## Important Notes
+- Stock ticker
+- Start date
+- End date
+- Bollinger Band window
+- Bollinger Band multiplier
+- RSI span
+- RSI overbought threshold
+- RSI oversold threshold
+- Initial capital
 
-- The app depends on Yahoo Finance data, so results depend on data availability and ticker correctness.
-- Very short date ranges may not work because the indicators need enough historical data.
-- The strategy uses next-day open price for trade execution.
-- The backtest assumes full capital deployment on every buy signal.
-- Transaction charges, taxes, slippage, brokerage, and liquidity constraints are not included.
-- The strategy does not guarantee profitability.
-- The AI summary is only an explanation of the backtest result, not investment advice.
+Example tickers:
 
----
+```text
+AAPL
+MSFT
+TSLA
+NVDA
+RELIANCE.NS
+TCS.NS
+INFY.NS
+```
 
-## Performance Metrics Explained
+For Indian stocks, use `.NS` at the end of the ticker.
 
-| Metric | Meaning |
-|---|---|
-| Net Return | Final portfolio value minus initial capital |
-| Annualised Return | Estimated yearly return over the selected period |
-| Sharpe Ratio | Risk-adjusted return measure |
-| Win Rate | Percentage of profitable trades |
-| Max Drawdown | Largest fall from a previous portfolio peak |
-| Best Trade | Highest profit from a single trade |
-| Worst Trade | Biggest loss from a single trade |
-| Win/Loss Ratio | Number of winning trades divided by losing trades |
+Example:
 
----
+```text
+RELIANCE.NS
+HDFCBANK.NS
+TCS.NS
+```
 
-## Limitations
-
-This project is a clean educational backtesting dashboard, but it is not a production-grade trading system.
-
-Current limitations include:
-
-- No transaction cost modeling
-- No slippage modeling
-- No stop-loss or take-profit system
-- No position sizing logic beyond all-in allocation
-- No live trading execution
-- No portfolio-level multi-stock backtesting
-- No walk-forward validation
-- No benchmark comparison chart
-- No risk management module
+Click **Run Analysis** to start the backtest.
 
 ---
 
-## Possible Future Improvements
+## 9. View the Results
 
-- Add transaction charges and slippage
-- Add benchmark comparison against S&P 500 or NIFTY 50
-- Add CAGR, volatility, Sortino ratio, and Calmar ratio
-- Add stop-loss and take-profit options
-- Add multi-stock portfolio backtesting
-- Add downloadable trade report as CSV
-- Add strategy parameter optimization
-- Add live market mode
-- Add authentication for saved user analyses
-- Add database support to store previous backtests
+After running the analysis, the app will show:
 
----
-
-## Educational Purpose
-
-QuantEdge is designed to help users understand how technical indicators can be combined into a simple trading strategy. It is useful for learning:
-
-- Technical analysis basics
-- Backtesting workflow
-- Financial dashboard development
-- Streamlit UI building
-- Interactive Plotly charting
-- Basic trading signal design
-- AI-assisted result explanation
+- Current signal: BUY, SELL, or HOLD
+- Performance metrics
+- Candlestick chart
+- Bollinger Bands chart
+- OBV chart
+- RSI chart
+- Buy/sell signal chart
+- Portfolio value chart
+- Profit/loss chart
+- Trade log
+- AI-generated summary, if Groq API is configured
 
 ---
 
-## Disclaimer
+## 10. View Previous Analyses
 
-This software is provided for learning, experimentation, and research only.
+Go to the **History** page to see previously saved analyses.
 
-It should not be used as the sole basis for buying, selling, or holding any financial asset. Always do your own research and consult a qualified financial advisor before making investment decisions.
+The app stores previous analyses using SQLite, so you can revisit old results without running the same analysis again.
+
+Each saved analysis may include:
+
+- Stock ticker
+- Date range
+- Initial capital
+- Strategy parameters
+- Performance metrics
+- Saved timestamp
+
+---
+
+## 11. Common Issues and Fixes
+
+### Streamlit command not found
+
+Install Streamlit:
+
+```bash
+pip install streamlit
+```
+
+Then run again:
+
+```bash
+streamlit run app.py
+```
+
+---
+
+### ModuleNotFoundError
+
+If you get an error like:
+
+```text
+ModuleNotFoundError: No module named 'yfinance'
+```
+
+Install dependencies again:
+
+```bash
+pip install -r requirements.txt
+```
+
+Or install the missing package manually:
+
+```bash
+pip install yfinance
+```
+
+---
+
+### Groq API summary not working
+
+Check that your `.env` file exists in the root project folder and contains:
+
+```env
+GROQ_API_KEY=your_groq_api_key_here
+```
+
+Also make sure the package is installed:
+
+```bash
+pip install groq python-dotenv
+```
+
+---
+
+### No stock data found
+
+This usually happens because:
+
+- The ticker is incorrect
+- Yahoo Finance does not support the ticker
+- The selected date range has no available data
+- Your internet connection is not working
+
+Try using a common ticker such as:
+
+```text
+AAPL
+MSFT
+RELIANCE.NS
+```
+
+---
+
+### Very few or no trades generated
+
+This can happen when:
+
+- The selected date range is too short
+- The strategy conditions are too strict
+- The Bollinger Bands are too wide
+- RSI thresholds are too extreme
+- The stock did not trigger enough buy/sell conditions
+
+Try increasing the date range or adjusting the strategy parameters.
