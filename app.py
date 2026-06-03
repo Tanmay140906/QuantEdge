@@ -358,7 +358,7 @@ Results of a technical analysis backtest on {ticker} from {start_date} to {end_d
 - Biggest profit: ${metrics['best_trade']:,.2f} | Biggest loss: ${metrics['worst_trade']:,.2f}
 - Max drawdown: ${metrics['max_dd']:,.2f}
 - Current signal: {signal}
-Write 4-5 plain English sentences: overall performance, what the current signal means, one strength, one risk, a cautionary note. No jargon, no bullets."""
+Write 4-5 technical English sentences: overall performance, what the current signal means, one strength, one risk, a cautionary note and insights regarding this stock that no one usually gives. No jargon, no bullets."""
         resp = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=[{"role":"user","content":prompt}],
